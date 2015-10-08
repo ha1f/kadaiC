@@ -52,7 +52,7 @@ void Matrix_show(Matrix* this) {
     for(int i=0; i<this->line; i++) {
         printf("| ");
         for(int j=0; j<this->row; j++) {
-            printf("%g ", this->components[i*this->row+j]);
+            printf("%3g ", this->components[i*this->row+j]);
         }
         printf("|\n");
     }
@@ -208,7 +208,17 @@ int main() {
     Matrix_show(res);
     Matrix_delete(res);
 
-    Matrix_delete(matrix);
     Matrix_delete(matrix2);
+
+    matrix2 = newMatrix(3, 3, (double []){
+        1,4,7,
+        2,5,8,
+        3,6,9
+    });
+    res = Matrix_mlt(matrix, matrix2);
+    Matrix_show(res);
+    Matrix_delete(res);
+    Matrix_delete(matrix2);
+    Matrix_delete(matrix);
     return 0;
 }
