@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define MIN(a,b) ((a<b) ? a : b)
+
 typedef struct {
     int line;
     int row;
@@ -16,6 +18,10 @@ void Matrix_init(Matrix* this, int line, int row, double *data) {
             this->components[i*row+j] = data[i*row+j];
         }
     }
+}
+
+void Matrix_changeComponents(Matrix* this, double *data) {
+    Matrix_init(this, this->line, this->row, data);
 }
 
 int Matrix_getLine(Matrix* this) {
@@ -44,10 +50,11 @@ void Matrix_delete(Matrix* this) {
 void Matrix_show(Matrix* this) {
     printf("matrix\n");
     for(int i=0; i<this->line; i++) {
+        printf("| ");
         for(int j=0; j<this->row; j++) {
-            printf("%lf ", this->components[i*this->row+j]);
+            printf("%g ", this->components[i*this->row+j]);
         }
-        printf("\n");
+        printf("|\n");
     }
 }
 
@@ -57,12 +64,12 @@ double Matrix_get(Matrix* this, int x, int y) {
         printf("Error! index out of range!");
         return 0;
     }
-    return this->components[x * this->line + y];
+    return this->components[x * this->row + y];
 }
 
 // 成分をset
 void Matrix_set(Matrix* this, int x, int y, double value) {
-    this->components[x * this->line + y] = value;
+    this->components[x * this->row + y] = value;
 }
 
 // 実数倍
@@ -81,21 +88,28 @@ Matrix* Matrix_newClone(Matrix* this) {
 }*/
 
 // 行列積として新たなベクトルを返す(deleteし忘れないように！)
-Matrix* Matrix_newMultiplyProduct(Matrix* this, Matrix* matrix) {
-    if ((this->row != matrix->line) || (this->line != matrix->row)){
+Matrix* Matrix_mlt(Matrix* this, Matrix* matrix) {
+    if (this->row != matrix->line){
         printf("Error! can't mutiply!");
         double dummy[1] = {0};
         return newMatrix(0, 0, dummy);
     }
-    double res[matrix->row][this->line];
-    for(int i=0; i < this->line ; i++) {
+
+    double res[this->line][matrix->row];
+    for(int i=0; i<matrix->row; i++) {
+        for(int j=0; j<this->line; j++) {
+            res[j][i] = 0;
+        }
+    }
+
+    for(int i=0; i < this->line; i++) {
         for(int j=0; j < matrix->row; j++) {
             for(int k=0; k < this->row; k++) {
-                res[i][j] = Matrix_get(this, i, k) * Matrix_get(this, k, j);
+                res[i][j] += Matrix_get(this, i, k) * Matrix_get(matrix, k, j);
             }
         }
     }
-    return newMatrix(matrix->row, this->line, res[0]);
+    return newMatrix(this->line, matrix->row, res[0]);
 }
 
 // 行列式
@@ -150,12 +164,51 @@ void Matrix_sub(Matrix* this, Matrix* matrix) {
 
 int main() {
     Matrix* matrix = newMatrix(3, 3, (double []){
-        1,0,0,
-        0,1,0,
-        0,0,1
+        1,2,3,
+        4,5,6,
+        7,8,9
     });
-    Matrix_show(matrix);
-    printf("%lf\n", Matrix_determinant(matrix));
+    Matrix* matrix2 = newMatrix(3, 1, (double []){
+        1,
+        2,
+        3,
+    });
+
+    Matrix* res;
+
+    res = Matrix_mlt(matrix, matrix2);
+    Matrix_show(res);
+    Matrix_delete(res);
+
+    Matrix_changeComponents(matrix, (double []){
+        1,2,3,
+        4,5,6,
+        7,8,9
+    });
+    Matrix_changeComponents(matrix2, (double []){
+        4,
+        5,
+        6
+    });
+    res = Matrix_mlt(matrix, matrix2);
+    Matrix_show(res);
+    Matrix_delete(res);
+
+    Matrix_changeComponents(matrix, (double []){
+        1,2,3,
+        4,5,6,
+        7,8,9
+    });
+    Matrix_changeComponents(matrix2, (double []){
+        7,
+        8,
+        9
+    });
+    res = Matrix_mlt(matrix, matrix2);
+    Matrix_show(res);
+    Matrix_delete(res);
+
     Matrix_delete(matrix);
+    Matrix_delete(matrix2);
     return 0;
 }

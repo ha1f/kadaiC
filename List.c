@@ -1,13 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "List.h"
 
 /** ここからListCell */
-ListCell* newListCell(int id) {
+ListCell* newListCell(int id, char name[]) {
     ListCell* listCell = malloc(sizeof(ListCell));
     listCell->id = id;
     listCell->next = NULL;
+    memcpy(listCell->name, name, 20);
     return listCell;
 }
 
@@ -16,7 +18,7 @@ void deleteListCell(ListCell* this) {
 }
 
 void ListCell_show(ListCell* this) {
-    printf("{id:%d, }", (this->id));
+    printf("{id:%d, name:%s}", (this->id), this->name);
 }
 
 int ListCell_Compare(ListCell* this, ListCell* listCell2) {

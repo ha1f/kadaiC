@@ -1,9 +1,16 @@
+/*
+ListCellStructにメンバを追加
+newListCellの.cと.hを共に編集
+showを編集
+*/
+
 struct ListCellStruct {
     int id;
+    char name[20];
     struct ListCellStruct* next;
 };
 typedef struct ListCellStruct ListCell;
-ListCell* newListCell(int id);
+ListCell* newListCell(int id, char name[]);
 void deleteListCell(ListCell* this);
 void ListCell_show(ListCell* this);
 // thisが小さければ-1, 大きければ1、同じなら0
