@@ -6,8 +6,6 @@ typedef struct {
     double* components;
 } Matrix;
 
-#define MIN(a,b) ((a<b) ? a : b)
-
 /** コンストラクタ、デストラクタ、イニシャライザ */
 Matrix* newMatrix(int line, int row, double *data);
 void Matrix_init(Matrix* this, int line, int row, double *data);
@@ -47,3 +45,5 @@ void Matrix_set(Matrix* this, int x, int y, double value);
 /** その他 */
 // 行数か列数どちらかが1ならベクトルと判定
 bool Matrix_isVector(Matrix* this);
+// 対称行列かどうか
+bool Matrix_isSymmetric(Matrix* this);

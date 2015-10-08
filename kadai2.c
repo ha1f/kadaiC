@@ -21,6 +21,8 @@ int main() {
         0,0,PRO(1),PRO(2),s,PRO(3),
         0,0,0,PRO(1),PRO(2),s+PRO(3)
     });
+    Matrix_show(matrix);
+
     Matrix_transpose(matrix);
 
 

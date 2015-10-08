@@ -81,7 +81,7 @@ void Matrix_showFlat(Matrix* this) {
             printf("%10g, ", this->components[i*this->row+j]);
         }
     }
-    printf("]\n");
+    printf("],\n");
 }
 
 // 成分をget
@@ -194,4 +194,20 @@ bool Matrix_isVector(Matrix* this) {
         return true;
     }
     return false;
+}
+
+bool Matrix_isSymmetric(Matrix* this) {
+    if (this->line != this->row) {
+        return false;
+    }
+    //右上の三角領域を評価
+    for(int i=0; i<this->line; i++) {
+        for(int j=i+1; j<this->row; j++) {
+            //１つでも違えばfalse
+            if(Matrix_get(this,i,j) != Matrix_get(this, j, i)){
+                return false;
+            }
+        }
+    }
+    return true;
 }
