@@ -1,13 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MIN(a,b) ((a<b) ? a : b)
-
-typedef struct {
-    int line;
-    int row;
-    double* components;
-} Matrix;
+#include "Matrix.h"
 
 void Matrix_init(Matrix* this, int line, int row, double *data) {
     this->line = line;
@@ -21,7 +15,11 @@ void Matrix_init(Matrix* this, int line, int row, double *data) {
 }
 
 void Matrix_changeComponents(Matrix* this, double *data) {
-    Matrix_init(this, this->line, this->row, data);
+    for(int i=0; i<this->line; i++) {
+        for(int j=0; j<this->row; j++) {
+            this->components[i*this->row+j] = data[i*this->row+j];
+        }
+    }
 }
 
 int Matrix_getLine(Matrix* this) {
@@ -160,65 +158,4 @@ void Matrix_sub(Matrix* this, Matrix* matrix) {
             Matrix_set(this, i, j, Matrix_get(this, i, j) - Matrix_get(matrix, i, j));
         }
     }
-}
-
-int main() {
-    Matrix* matrix = newMatrix(3, 3, (double []){
-        1,2,3,
-        4,5,6,
-        7,8,9
-    });
-    Matrix* matrix2 = newMatrix(3, 1, (double []){
-        1,
-        2,
-        3,
-    });
-
-    Matrix* res;
-
-    res = Matrix_mlt(matrix, matrix2);
-    Matrix_show(res);
-    Matrix_delete(res);
-
-    Matrix_changeComponents(matrix, (double []){
-        1,2,3,
-        4,5,6,
-        7,8,9
-    });
-    Matrix_changeComponents(matrix2, (double []){
-        4,
-        5,
-        6
-    });
-    res = Matrix_mlt(matrix, matrix2);
-    Matrix_show(res);
-    Matrix_delete(res);
-
-    Matrix_changeComponents(matrix, (double []){
-        1,2,3,
-        4,5,6,
-        7,8,9
-    });
-    Matrix_changeComponents(matrix2, (double []){
-        7,
-        8,
-        9
-    });
-    res = Matrix_mlt(matrix, matrix2);
-    Matrix_show(res);
-    Matrix_delete(res);
-
-    Matrix_delete(matrix2);
-
-    matrix2 = newMatrix(3, 3, (double []){
-        1,4,7,
-        2,5,8,
-        3,6,9
-    });
-    res = Matrix_mlt(matrix, matrix2);
-    Matrix_show(res);
-    Matrix_delete(res);
-    Matrix_delete(matrix2);
-    Matrix_delete(matrix);
-    return 0;
 }
