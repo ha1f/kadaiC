@@ -5,8 +5,27 @@
 
 const double s = 0.2;
 
+// posをupdate
+void move(Matrix** pos, Matrix* matrix) {
+    Matrix* res = newMatrix_mlt(matrix, *pos);
+    Matrix_delete(*pos);
+    *pos = res;
+}
+
 int main() {
-    Matrix* pos = newMatrix(1, 6, (double []){
+    Matrix* matrix = newMatrix(6, 6, (double []){
+        (s+PRO(3)),PRO(2),PRO(1),0,0,0,
+        PRO(3), s,PRO(2), PRO(1),0,0,
+        PRO(1),PRO(2),s,PRO(2),PRO(1),0,
+        0,PRO(1),PRO(2),s,PRO(2),PRO(1),
+        0,0,PRO(1),PRO(2),s,PRO(3),
+        0,0,0,PRO(1),PRO(2),s+PRO(3)
+    });
+    Matrix_transpose(matrix);
+
+
+    //初期位置
+    Matrix* pos = newMatrix(6, 1, (double []){
         1,
         0,
         0,
@@ -14,24 +33,14 @@ int main() {
         0,
         0
     });
+    Matrix_showFlat(pos);
+    for(int i=0; i<80; i++) {
+        move(&pos, matrix);
+        Matrix_showFlat(pos);
+    }
 
-    Matrix_show(pos);
 
-    Matrix* matrix = newMatrix(6, 6, (double []){
-        (s+PRO(3)),PRO(2),PRO(1),0,0,0,
-        PRO(3),s,PRO(2), PRO(1),0,0,
-        PRO(1),PRO(2),s,PRO(2),PRO(1),0,
-        0,PRO(1),PRO(2),s,PRO(2),PRO(1),
-        0,0,PRO(1),PRO(2),s,PRO(3),
-        0,0,0,PRO(1),PRO(2),s+PRO(3)
-    });
-
-    Matrix* res;
-    res = Matrix_mlt(pos,matrix);
-    Matrix_show(res);
-    Matrix_delete(res);
-
-    Matrix_delete(matrix);
     Matrix_delete(pos);
+    Matrix_delete(matrix);
     return 0;
 }

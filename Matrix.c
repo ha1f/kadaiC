@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "Matrix.h"
 
@@ -20,6 +21,22 @@ void Matrix_changeComponents(Matrix* this, double *data) {
             this->components[i*this->row+j] = data[i*this->row+j];
         }
     }
+}
+
+//line*row = row*lineを利用、
+void Matrix_transpose(Matrix* this) {
+
+    double data[this->row * this->line];
+    for(int i=0; i < this->line; i++) {
+        for(int j=0; j < this->row; j++) {
+            data[j*this->line+i] = this->components[i*this->row+j];
+        }
+    }
+    Matrix_changeComponents(this, data);
+
+    int tmpLine = this->line;
+    this->line = this->row;
+    this->row = tmpLine;
 }
 
 int Matrix_getLine(Matrix* this) {
@@ -46,14 +63,25 @@ void Matrix_delete(Matrix* this) {
 }
 
 void Matrix_show(Matrix* this) {
-    printf("matrix\n");
+    printf("matrix{\n");
     for(int i=0; i<this->line; i++) {
-        printf("| ");
+        printf("{ ");
         for(int j=0; j<this->row; j++) {
-            printf("%3g ", this->components[i*this->row+j]);
+            printf("%10g ", this->components[i*this->row+j]);
         }
-        printf("|\n");
+        printf("},\n");
     }
+    printf("};\n");
+}
+
+void Matrix_showFlat(Matrix* this) {
+    printf("[ ");
+    for(int i=0; i<this->line; i++) {
+        for(int j=0; j<this->row; j++) {
+            printf("%10g, ", this->components[i*this->row+j]);
+        }
+    }
+    printf("]\n");
 }
 
 // 成分をget
@@ -86,9 +114,10 @@ Matrix* Matrix_newClone(Matrix* this) {
 }*/
 
 // 行列積として新たなベクトルを返す(deleteし忘れないように！)
-Matrix* Matrix_mlt(Matrix* this, Matrix* matrix) {
+Matrix* newMatrix_mlt(Matrix* this, Matrix* matrix) {
     if (this->row != matrix->line){
-        printf("Error! can't mutiply!");
+        printf("%d,%d", this->row, matrix->line);
+        printf("Error! can't mutiply!\n");
         double dummy[1] = {0};
         return newMatrix(0, 0, dummy);
     }
@@ -158,4 +187,11 @@ void Matrix_sub(Matrix* this, Matrix* matrix) {
             Matrix_set(this, i, j, Matrix_get(this, i, j) - Matrix_get(matrix, i, j));
         }
     }
+}
+
+bool Matrix_isVector(Matrix* this) {
+    if ((this->line == 1) || (this->row == 1)) {
+        return true;
+    }
+    return false;
 }

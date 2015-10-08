@@ -17,7 +17,7 @@ int main() {
 
     Matrix* res;
 
-    res = Matrix_mlt(matrix, matrix2);
+    res = newMatrix_mlt(matrix, matrix2);
     Matrix_show(res);
     Matrix_delete(res);
 
@@ -31,7 +31,7 @@ int main() {
         5,
         6
     });
-    res = Matrix_mlt(matrix, matrix2);Matrix_show(res);Matrix_delete(res);
+    res = newMatrix_mlt(matrix, matrix2);Matrix_show(res);Matrix_delete(res);
 
     Matrix_changeComponents(matrix, (double []){
         1,2,3,
@@ -43,7 +43,7 @@ int main() {
         8,
         9
     });
-    res = Matrix_mlt(matrix, matrix2);Matrix_show(res);Matrix_delete(res);
+    res = newMatrix_mlt(matrix, matrix2);Matrix_show(res);Matrix_delete(res);
 
     Matrix_delete(matrix2);
 
@@ -52,7 +52,7 @@ int main() {
         2,5,8,
         3,6,9
     });
-    res = Matrix_mlt(matrix, matrix2);Matrix_show(res);Matrix_delete(res);
+    res = newMatrix_mlt(matrix, matrix2);Matrix_show(res);Matrix_delete(res);
 
     Matrix_delete(matrix2);
     Matrix_delete(matrix);
