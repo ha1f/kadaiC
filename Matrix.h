@@ -1,5 +1,8 @@
 #include <stdbool.h>
 
+#ifndef _MATRIX_H_
+#define _MATRIX_H_
+
 typedef struct {
     int line;
     int row;
@@ -47,3 +50,5 @@ void Matrix_set(Matrix* this, int x, int y, double value);
 bool Matrix_isVector(Matrix* this);
 // 対称行列かどうか
 bool Matrix_isSymmetric(Matrix* this);
+
+#endif

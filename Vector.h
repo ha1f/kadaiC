@@ -2,6 +2,9 @@
 
 #include <stdbool.h>
 
+#ifndef _VECTOR_H_
+#define _VECTOR_H_
+
 typedef struct {
     int dim;
     double* components;
@@ -21,3 +24,5 @@ void Vector_show(Vector* this);
 double Vector_dotProduct(Vector* vec1, Vector* vec2);
 double Vector_distTo(Vector* vec1, Vector* vec2);
 void Vector_add(Vector* this, Vector* vec2);
+
+#endif

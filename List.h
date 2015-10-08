@@ -4,6 +4,9 @@ newListCellの.cと.hを共に編集
 showを編集
 */
 
+#ifndef _LIST_H_
+#define _LIST_H_
+
 struct ListCellStruct {
     int id;
     char name[20];
@@ -43,3 +46,5 @@ void List_extend(List* this, List* list2);
 // コンストラクタ、デストラクタ(要素も全て破棄)
 List* newList();
 void deleteList(List* this);
+
+#endif
