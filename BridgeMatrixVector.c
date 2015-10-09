@@ -12,7 +12,7 @@ Vector* newVectorFromMatrix(Matrix* matrix) {
 
     int dim = ((Matrix_getLine(matrix) > 1) ? Matrix_getLine(matrix):Matrix_getRow(matrix));
     Vector* vec = newVector(dim, Matrix_getComponents(matrix));
-    Matrix_delete(matrix);
+    deleteMatrix(matrix);
 
     return vec;
 }

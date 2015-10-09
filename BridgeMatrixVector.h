@@ -1,3 +1,5 @@
+/** MatrixとVectorの相互変換 */
+
 #include "Matrix.h"
 #include "Vector.h"
 

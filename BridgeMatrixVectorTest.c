@@ -17,5 +17,5 @@ int main() {
     matrix = newMatrixFromVector(vec);
     Matrix_show(matrix);
 
-    Matrix_delete(matrix);
+    deleteMatrix(matrix);
 }

@@ -12,7 +12,7 @@ typedef struct {
 /** コンストラクタ、デストラクタ、イニシャライザ */
 Matrix* newMatrix(int line, int row, double *data);
 void Matrix_init(Matrix* this, int line, int row, double *data);
-void Matrix_delete(Matrix* this);
+void deleteMatrix(Matrix* this);
 
 /** 表示 */
 //行列表示

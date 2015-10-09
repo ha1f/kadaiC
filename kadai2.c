@@ -8,7 +8,7 @@ const double s = 0.2;
 // posをupdate
 void move(Matrix** pos, Matrix* matrix) {
     Matrix* res = newMatrix_mlt(matrix, *pos);
-    Matrix_delete(*pos);
+    deleteMatrix(*pos);
     *pos = res;
 }
 
@@ -42,7 +42,7 @@ int main() {
     }
 
 
-    Matrix_delete(pos);
-    Matrix_delete(matrix);
+    deleteMatrix(pos);
+    deleteMatrix(matrix);
     return 0;
 }

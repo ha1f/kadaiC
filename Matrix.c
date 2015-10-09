@@ -57,7 +57,7 @@ Matrix* newMatrix(int line, int row, double *data) {
     return this;
 }
 
-void Matrix_delete(Matrix* this) {
+void deleteMatrix(Matrix* this) {
     free(this->components);
     free(this);
 }
@@ -74,6 +74,7 @@ void Matrix_show(Matrix* this) {
     printf("};\n");
 }
 
+// そのままPythonのコードに
 void Matrix_showFlat(Matrix* this) {
     printf("[ ");
     for(int i=0; i<this->line; i++) {
