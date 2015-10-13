@@ -11,6 +11,7 @@ void Matrix_init(Matrix* this, int line, int row, double *data) {
     for(int i=0; i<line; i++) {
         for(int j=0; j<row; j++) {
             this->components[i*row+j] = data[i*row+j];
+            // data++して、*dataを読みだしていったほうが速い？
         }
     }
 }
@@ -25,7 +26,6 @@ void Matrix_changeComponents(Matrix* this, double *data) {
 
 //line*row = row*lineを利用、
 void Matrix_transpose(Matrix* this) {
-
     double data[this->row * this->line];
     for(int i=0; i < this->line; i++) {
         for(int j=0; j < this->row; j++) {

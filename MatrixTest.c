@@ -46,7 +46,6 @@ int main() {
     res = newMatrix_mlt(matrix, matrix2);Matrix_show(res);deleteMatrix(res);
 
     deleteMatrix(matrix2);
-
     matrix2 = newMatrix(3, 3, (double []){
         1,4,7,
         2,5,8,

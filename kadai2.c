@@ -13,6 +13,7 @@ void move(Matrix** pos, Matrix* matrix) {
 }
 
 int main() {
+    // 遷移行列
     Matrix* matrix = newMatrix(6, 6, (double []){
         (s+PRO(3)),PRO(2),PRO(1),0,0,0,
         PRO(3), s,PRO(2), PRO(1),0,0,
@@ -22,7 +23,7 @@ int main() {
         0,0,0,PRO(1),PRO(2),s+PRO(3)
     });
     Matrix_show(matrix);
-
+    // 転置
     Matrix_transpose(matrix);
 
 
@@ -36,11 +37,10 @@ int main() {
         0
     });
     Matrix_showFlat(pos);
-    for(int i=0; i<80; i++) {
+    for(int i=0; i < 80; i++) {
         move(&pos, matrix);
         Matrix_showFlat(pos);
     }
-
 
     deleteMatrix(pos);
     deleteMatrix(matrix);
