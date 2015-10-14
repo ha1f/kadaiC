@@ -123,6 +123,21 @@ void* List_get(List* this, int index) {
     return NULL;
 }
 
+void List_set(List* this, int index, void* data) {
+    int i = 0;
+    ListCell* cell = this->first;
+    while(cell != NULL) {
+        if (i==index) {
+            memcpy(cell->data, data, this->dataSize);
+            return;
+        }
+        cell = cell->next;
+        i=i+1;
+    }
+    printf("Set Error: index is out of range!\n");
+    return;
+}
+
 int List_getLength(List* this) {
     return this->length;
 }
