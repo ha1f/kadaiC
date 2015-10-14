@@ -42,6 +42,7 @@ void List_append(List* this, void* data) {
 void List_remove(List* this, int index) {
     ListCell* cell = this->first;
     if (cell == NULL) {printf("Error: index is out of range!\n");return;}
+    // 先頭が変わるとき
     if (index == 0) {
         ListCell* next = cell->next;
         deleteListCell(cell);
@@ -55,6 +56,7 @@ void List_remove(List* this, int index) {
             ListCell* next = cell->next->next;
             deleteListCell(cell->next);
             cell->next = next;
+            // 末尾が削除された時
             if (next == NULL) {
                 this->last = cell->next;
             }
