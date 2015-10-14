@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "Matrix.h"
 
@@ -8,20 +9,11 @@ void Matrix_init(Matrix* this, int line, int row, double *data) {
     this->line = line;
     this->row = row;
     this->components = malloc(sizeof(double) * line * row);
-    for(int i=0; i<line; i++) {
-        for(int j=0; j<row; j++) {
-            this->components[i*row+j] = data[i*row+j];
-            // data++して、*dataを読みだしていったほうが速い？
-        }
-    }
+    memcpy(this->components, data, sizeof(double) * line * row);
 }
 
 void Matrix_changeComponents(Matrix* this, double *data) {
-    for(int i=0; i<this->line; i++) {
-        for(int j=0; j<this->row; j++) {
-            this->components[i*this->row+j] = data[i*this->row+j];
-        }
-    }
+    memcpy(this->components, data, sizeof(double) * line * row);
 }
 
 //line*row = row*lineを利用、

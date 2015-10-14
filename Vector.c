@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
+#include <string.h>
 #include "Vector.h"
 
 bool Vector_isHomo(Vector* vec1, Vector* vec2) {
@@ -13,9 +14,7 @@ Vector* newVector(int dim, double* vals) {
     vec->dim = dim;
     vec->components = malloc(sizeof(double) * dim);
 
-    for(int i=0; i<dim; i++) {
-        vec->components[i] = vals[i];
-    }
+    memcpy(vec->components, vals, sizeof(double) * dim);
     return vec;
 }
 

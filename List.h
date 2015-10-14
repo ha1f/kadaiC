@@ -12,6 +12,7 @@ struct ListCellStruct {
     struct ListCellStruct* next;
 };
 typedef struct ListCellStruct ListCell;
+// dataの先頭アドレスと、サイズを渡す
 ListCell* newListCell(int dataSize, void* data);
 void deleteListCell(ListCell* this);
 void ListCell_show(ListCell* this);
@@ -23,6 +24,7 @@ typedef struct {
     ListCell* first;
     ListCell* last;
 
+    // cellのデータ１つあたりのサイズ
     int dataSize;
     void (*showCellData)(void*);
 
