@@ -2,26 +2,19 @@
 #include "List.h"
 
 int main() {
-    List* list = newList();
-    List_append(list, newListCell(3,"あいう"));
-    List_append(list, newListCell(6,"あいう"));
-    List_append(list, newListCell(7,"あいう"));
-    List_append(list, newListCell(8,"あいう"));
-    List_remove(list, 0);
-    List_append(list, newListCell(5,"あいう"));
+    List* list = newList(sizeof(char) * (3+1));
 
-    List_insert(list, 0, newListCell(0,"あいう"));
-    List_insert(list, 1, newListCell(1,"あいう"));
+    char testString[] = "abc";
 
-    List_show(list);
-    printf("len=%d\n", List_getLength(list));
+    List_append(list, testString);
+    List_append(list, testString);
+    List_append(list, testString);
 
-    List_remove(list, 1);
+    char testString2[] = "def";
+
+    List_insert(list, 1, testString2);
 
     List_show(list);
-    printf("len=%d\n", List_getLength(list));
-
-    ListCell_show(List_get(list, 1));
 
     deleteList(list);
     return 0;

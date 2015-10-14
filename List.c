@@ -5,36 +5,27 @@
 #include "List.h"
 
 /** ここからListCell */
-ListCell* newListCell(int id, char name[]) {
+ListCell* newListCell(int dataSize, void* data) {
     ListCell* listCell = malloc(sizeof(ListCell));
-    listCell->id = id;
+    listCell->data = malloc(dataSize);
     listCell->next = NULL;
-    memcpy(listCell->name, name, 20);
+    memcpy(listCell->data, data, dataSize);
     return listCell;
 }
 
 void deleteListCell(ListCell* this) {
+    free(this->data);
     free(this);
 }
 
 void ListCell_show(ListCell* this) {
-    printf("{id:%d, name:%s}", (this->id), this->name);
+    printf("listCell");
 }
-
-int ListCell_Compare(ListCell* this, ListCell* listCell2) {
-    if (this->id < listCell2->id) {
-        return -1;
-    } else if (this->id == listCell2->id) {
-        return 0;
-    } else {
-        return 1;
-    }
-}
-
 
 /** ここからList */
 // 末尾に追加
-void List_append(List* this, ListCell* cell) {
+void List_append(List* this, void* data) {
+    ListCell* cell = newListCell(this->dataSize, (void*)data);
     if (this->first == NULL) { // len=0
         this->first = cell;
     } else if (this->last == NULL) { // len=1
@@ -77,7 +68,8 @@ void List_remove(List* this, int index) {
 }
 
 // 挿入、0なら先頭
-void List_insert(List* this, int index, ListCell* insertCell) {
+void List_insert(List* this, int index, void* data) {
+    ListCell* insertCell = newListCell(this->dataSize, data);
     if (index == 0) {
         insertCell->next = this->first;
         this->first = insertCell;
@@ -107,7 +99,7 @@ void List_show(List* this) {
     ListCell* cell = this->first;
     printf("[ ");
     while(cell != NULL) {
-        ListCell_show(cell);
+        printf("%s", (char*)cell->data);
         printf(", ");
         cell = cell->next;
     }
@@ -154,8 +146,9 @@ void List_extend(List* this, List* list2) {
     free(list2);
 }
 
-List* newList() {
+List* newList(int dataSize) {
     List* list = malloc(sizeof(List));
+    list->dataSize = dataSize;
     list->first = NULL;
     list->last = NULL;
     list->length = 0;

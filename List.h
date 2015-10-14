@@ -8,12 +8,11 @@ showを編集
 #define _LIST_H_
 
 struct ListCellStruct {
-    int id;
-    char name[20];
+    void* data;
     struct ListCellStruct* next;
 };
 typedef struct ListCellStruct ListCell;
-ListCell* newListCell(int id, char name[]);
+ListCell* newListCell(int dataSize, void* data);
 void deleteListCell(ListCell* this);
 void ListCell_show(ListCell* this);
 // thisが小さければ-1, 大きければ1、同じなら0
@@ -23,14 +22,15 @@ int ListCell_Compare(ListCell* this, ListCell* listCell2);
 typedef struct {
     ListCell* first;
     ListCell* last;
+    int dataSize;
     int length; //がんばって計算してるので代入禁止
 } List;
 // 末尾に追加
-void List_append(List* this, ListCell* cell);
+void List_append(List* this, void* data);
 // 特定の位置を削除
 void List_remove(List* this, int index);
 // 特定の位置に挿入
-void List_insert(List* this, int index, ListCell* insertCell);
+void List_insert(List* this, int index, void* data);
 // すべて表示
 void List_show(List* this);
 // 長さを取得
@@ -44,7 +44,7 @@ void List_clear(List* this);
 // リストを連結
 void List_extend(List* this, List* list2);
 // コンストラクタ、デストラクタ(要素も全て破棄)
-List* newList();
+List* newList(int dataSize);
 void deleteList(List* this);
 
 #endif
