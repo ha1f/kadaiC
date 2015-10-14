@@ -99,7 +99,7 @@ void List_show(List* this) {
     ListCell* cell = this->first;
     printf("[ ");
     while(cell != NULL) {
-        printf("%s", (char*)cell->data);
+        this->showCellData(cell->data);
         printf(", ");
         cell = cell->next;
     }
@@ -146,9 +146,10 @@ void List_extend(List* this, List* list2) {
     free(list2);
 }
 
-List* newList(int dataSize) {
+List* newList(int dataSize, void (*showCellData)(void*)) {
     List* list = malloc(sizeof(List));
     list->dataSize = dataSize;
+    list->showCellData = showCellData;
     list->first = NULL;
     list->last = NULL;
     list->length = 0;

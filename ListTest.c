@@ -1,16 +1,20 @@
 #include <stdio.h>
 #include "List.h"
 
+void showListCelldata(void* data) {
+    printf("%s", (char*)data);
+}
+
 int main() {
-    List* list = newList(sizeof(char) * (3+1));
+    List* list = newList(sizeof(char) * (4+1), showListCelldata);
 
-    char testString[] = "abc";
+    char testString[] = "hoge";
 
     List_append(list, testString);
     List_append(list, testString);
     List_append(list, testString);
 
-    char testString2[] = "def";
+    char testString2[] = "fuga";
 
     List_insert(list, 1, testString2);
 

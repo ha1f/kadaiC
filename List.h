@@ -22,7 +22,10 @@ int ListCell_Compare(ListCell* this, ListCell* listCell2);
 typedef struct {
     ListCell* first;
     ListCell* last;
+
     int dataSize;
+    void (*showCellData)(void*);
+
     int length; //がんばって計算してるので代入禁止
 } List;
 // 末尾に追加
@@ -44,7 +47,7 @@ void List_clear(List* this);
 // リストを連結
 void List_extend(List* this, List* list2);
 // コンストラクタ、デストラクタ(要素も全て破棄)
-List* newList(int dataSize);
+List* newList(int dataSize, void (*showCellData)(void*));
 void deleteList(List* this);
 
 #endif
