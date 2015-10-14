@@ -39,7 +39,7 @@ void List_show(List* this);
 // 長さを取得
 int List_getLength(List* this);
 // 特定の要素をget
-ListCell* List_get(List* this, int index);
+void* List_get(List* this, int index);
 // 特定のオブジェクトが含まれているか、なければ-1、あればindex
 int List_find(List* this, ListCell* obj);
 // リストをすべてクリア

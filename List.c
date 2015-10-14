@@ -108,13 +108,13 @@ void List_show(List* this) {
     printf("]\n");
 }
 
-// 特定のcellを取得、なければNULL
-ListCell* List_get(List* this, int index) {
+// 特定のcellのdataを取得、なければNULL
+void* List_get(List* this, int index) {
     int i = 0;
     ListCell* cell = this->first;
     while(cell != NULL) {
         if (i==index) {
-            return cell;
+            return cell->data;
         }
         cell = cell->next;
         i=i+1;
@@ -127,6 +127,8 @@ int List_getLength(List* this) {
     return this->length;
 }
 
+/*
+//仕様変更のため使えない
 // 特定のオブジェクトが含まれているか、なければ-1、あればindex
 int List_find(List* this, ListCell* obj) {
     int i = 0;
@@ -141,6 +143,7 @@ int List_find(List* this, ListCell* obj) {
     printf("Find Error: object not found\n");
     return -1;
 }
+*/
 
 void List_extend(List* this, List* list2) {
     this->last->next = list2->first;
