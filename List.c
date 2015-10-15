@@ -166,14 +166,14 @@ void List_extend(List* this, List* list2) {
     free(list2);
 }
 
-/*
-void List_map(List* this, (void) (*mapFunc)(void*)) {
+
+void List_map(List* this, void (*mapFunc)(void*)) {
     ListCell* cell = this->first;
     while(cell != NULL) {
         mapFunc(cell->data);
         cell = cell->next;
     }
-}*/
+}
 
 List* newList(size_t dataSize, void (*showCellData)(void*)) {
     List* list = malloc(sizeof(List));

@@ -49,7 +49,7 @@ int List_find(List* this, ListCell* obj);
 // リストをすべてクリア
 void List_clear(List* this);
 // map
-//void List_map(List* this, (void) (*mapFunc)(void*));
+void List_map(List* this, void (*mapFunc)(void*));
 // リストを連結
 void List_extend(List* this, List* list2);
 // コンストラクタ、デストラクタ(要素も全て破棄)
