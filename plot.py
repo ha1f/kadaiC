@@ -2,7 +2,6 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-from enum import Enum
 
 class pColor:
      red = "r"

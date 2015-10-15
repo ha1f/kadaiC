@@ -5,7 +5,7 @@
 #include "List.h"
 
 /** ここからListCell */
-ListCell* newListCell(int dataSize, void* data) {
+ListCell* newListCell(size_t dataSize, void* data) {
     ListCell* listCell = malloc(sizeof(ListCell));
     listCell->data = malloc(dataSize);
     listCell->next = NULL;
@@ -166,7 +166,16 @@ void List_extend(List* this, List* list2) {
     free(list2);
 }
 
-List* newList(int dataSize, void (*showCellData)(void*)) {
+/*
+void List_map(List* this, (void) (*mapFunc)(void*)) {
+    ListCell* cell = this->first;
+    while(cell != NULL) {
+        mapFunc(cell->data);
+        cell = cell->next;
+    }
+}*/
+
+List* newList(size_t dataSize, void (*showCellData)(void*)) {
     List* list = malloc(sizeof(List));
     list->dataSize = dataSize;
     list->showCellData = showCellData;

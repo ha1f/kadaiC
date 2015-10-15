@@ -13,7 +13,7 @@ struct ListCellStruct {
 };
 typedef struct ListCellStruct ListCell;
 // dataの先頭アドレスと、サイズを渡す
-ListCell* newListCell(int dataSize, void* data);
+ListCell* newListCell(size_t dataSize, void* data);
 void deleteListCell(ListCell* this);
 void ListCell_show(ListCell* this);
 // thisが小さければ-1, 大きければ1、同じなら0
@@ -48,10 +48,12 @@ void List_set(List* this, int index, void* data);
 int List_find(List* this, ListCell* obj);
 // リストをすべてクリア
 void List_clear(List* this);
+// map
+//void List_map(List* this, (void) (*mapFunc)(void*));
 // リストを連結
 void List_extend(List* this, List* list2);
 // コンストラクタ、デストラクタ(要素も全て破棄)
-List* newList(int dataSize, void (*showCellData)(void*));
+List* newList(size_t dataSize, void (*showCellData)(void*));
 void deleteList(List* this);
 
 #endif

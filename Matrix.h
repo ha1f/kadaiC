@@ -40,7 +40,7 @@ Matrix* newMatrix_mlt(Matrix* this, Matrix* matrix);
 /** 編集 */
 // 転置行列にする
 void Matrix_transpose(Matrix* this);
-// 値をまとめて書き換え
+// 値をまとめて書き換え、領域をリユース
 void Matrix_changeComponents(Matrix* this, double *data);
 //成分ごとに書き換え
 void Matrix_set(Matrix* this, int x, int y, double value);

@@ -32,7 +32,7 @@ def chebyshev(x, n):
     for i in range(0, num):
         res += float(efs[n][i]) * math.pow(x,i)
     return res
-    
+
 
 calcEfs()
 
