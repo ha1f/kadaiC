@@ -44,11 +44,9 @@ int List_getLength(List* this);
 void* List_get(List* this, int index);
 // 特定の要素をset
 void List_set(List* this, int index, void* data);
-// 特定のオブジェクトが含まれているか、なければ-1、あればindex
-int List_find(List* this, ListCell* obj);
 // リストをすべてクリア
 void List_clear(List* this);
-// map
+// map、変換関数を渡す(セットまで行ってもらう)
 void List_map(List* this, void (*mapFunc)(void*));
 // リストを連結
 void List_extend(List* this, List* list2);

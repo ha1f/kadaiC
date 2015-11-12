@@ -13,7 +13,7 @@ void Matrix_init(Matrix* this, int line, int row, double *data) {
 }
 
 void Matrix_changeComponents(Matrix* this, double *data) {
-    memcpy(this->components, data, sizeof(double) * line * row);
+    memcpy(this->components, data, sizeof(double) * this->line * this->row);
 }
 
 //line*row = row*lineを利用、
@@ -49,6 +49,27 @@ Matrix* newMatrix(int line, int row, double *data) {
     return this;
 }
 
+Matrix* newZeroMatrix(int line, int row) {
+    Matrix* this = malloc(sizeof(Matrix));
+    this->line = line;
+    this->row = row;
+    this->components = malloc(sizeof(double) * line * row);
+    memset(this->components, 0, sizeof(double) * line * row);
+    return this;
+}
+
+Matrix* newUnitMatrix(int line, int row) {
+    if (line != row) {
+        printf("Unit Matrix Error!\nNot Same Dimention!\n");
+        return NULL;
+    }
+    Matrix* this = newZeroMatrix(line, row);
+    for(int i=0; i<line; i++) {
+        Matrix_set(this, i, i, 1.0);
+    }
+    return this;
+}
+
 void deleteMatrix(Matrix* this) {
     free(this->components);
     free(this);
@@ -59,7 +80,7 @@ void Matrix_show(Matrix* this) {
     for(int i=0; i<this->line; i++) {
         printf("{ ");
         for(int j=0; j<this->row; j++) {
-            printf("%10g ", this->components[i*this->row+j]);
+            printf("%3g ", this->components[i*this->row+j]);
         }
         printf("},\n");
     }
@@ -71,7 +92,7 @@ void Matrix_showFlat(Matrix* this) {
     printf("[ ");
     for(int i=0; i<this->line; i++) {
         for(int j=0; j<this->row; j++) {
-            printf("%10g, ", this->components[i*this->row+j]);
+            printf("%g, ", this->components[i*this->row+j]);
         }
     }
     printf("],\n");
@@ -80,7 +101,7 @@ void Matrix_showFlat(Matrix* this) {
 // 成分をget
 double Matrix_get(Matrix* this, int x, int y) {
     if ((x >= this->line) || (y >= this->row)) {
-        printf("Error! index out of range!");
+        printf("get Error! index out of range!\n");
         return 0;
     }
     return this->components[x * this->row + y];
@@ -88,6 +109,10 @@ double Matrix_get(Matrix* this, int x, int y) {
 
 // 成分をset
 void Matrix_set(Matrix* this, int x, int y, double value) {
+    if ((x >= this->line) || (y >= this->row)) {
+        printf("set Error! index out of range!\n");
+        return;
+    }
     this->components[x * this->row + y] = value;
 }
 
@@ -194,13 +219,131 @@ bool Matrix_isSymmetric(Matrix* this) {
         return false;
     }
     //右上の三角領域を評価
-    for(int i=0; i<this->line; i++) {
-        for(int j=i+1; j<this->row; j++) {
+    for (int i=0; i<this->line; i++) {
+        for (int j=i+1; j<this->row; j++) {
             //１つでも違えばfalse
-            if(Matrix_get(this,i,j) != Matrix_get(this, j, i)){
+            if (Matrix_get(this,i,j) != Matrix_get(this, j, i)) {
                 return false;
             }
         }
     }
     return true;
+}
+
+bool Matrix_isEqual(Matrix* m1, Matrix* m2) {
+    if ((m1->line != m2->line) || (m1->row != m2->row) ){
+        return false;
+    }
+    for (int i=0; i<m1->line; i++) {
+        for (int j=i+1; j<m1->row; j++) {
+            if (Matrix_get(m1, i, j) != Matrix_get(m2, i, j)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+Matrix* newFS(Matrix* matrixL, Matrix* matrixY) {
+    Matrix* res = newZeroMatrix(matrixL->line,1);
+
+    for (int i=0; i<res->line; i++) {
+        double value = Matrix_get(matrixY, i,0);
+        for(int k=0; k<i; k++) {
+            value -= Matrix_get(matrixL, i, k) * Matrix_get(res, k, 0);
+        }
+        value /= Matrix_get(matrixL, i, i);
+        Matrix_set(res, i, 0, value);
+    }
+
+    return res;
+}
+
+Matrix* newBS(Matrix* matrixU, Matrix* matrixY) {
+    Matrix* res = newZeroMatrix(matrixU->line, 1);
+
+    for (int i=(res->line-1); i>=0; i--) {
+        double value = Matrix_get(matrixY, i, 0);
+        for(int k=i; k<res->line; k++) {
+            value -= Matrix_get(res, k, 0) * Matrix_get(matrixU, i, k);
+        }
+        value /= Matrix_get(matrixU, i, i);
+        Matrix_set(res, i, 0, value);
+    }
+
+    return res;
+}
+
+Matrix* newMatrix_getRowOf(Matrix* this, int row) {
+    Matrix* res = newZeroMatrix(this->line, 1);
+    for(int i=0; i<this->line; i++) {
+        Matrix_set(res, i, 0, Matrix_get(this, i, row));
+    }
+    return res;
+}
+
+Matrix* newMatrix_inverse(Matrix* this) {
+    // 単位行列をつくる
+    Matrix* matrixI = newUnitMatrix(this->line, this->row);
+    // this res = I　を解く
+    Matrix* res = newMatrix_solve(this, matrixI);
+    deleteMatrix(matrixI);
+    return res;
+}
+
+Matrix* newMatrix_solve(Matrix* matrixA, Matrix* matrixY) {
+    if (matrixA->row != matrixY->line) {
+        printf("solve Error!");
+        return NULL;
+    }
+
+    // LとUを求める
+    Matrix* matrixL = newUnitMatrix(matrixA->line, matrixA->row);
+    Matrix* matrixU = newZeroMatrix(matrixA->row, matrixA->line);
+    for(int j=0; j<Matrix_getRow(matrixA); j++) {
+        for(int i=0; i<Matrix_getLine(matrixA); i++) {
+            double value = Matrix_get(matrixA, i, j);
+            if (i<=j) {
+                //uの計算
+                for(int k=0; k<i; k++) {
+                    value -= Matrix_get(matrixL, i, k) * Matrix_get(matrixU, k, j);
+                }
+                Matrix_set(matrixU, i, j, value);
+            } else {
+                //lの計算
+                for(int k=0; k<j; k++) {
+                    value -= Matrix_get(matrixL, i, k) * Matrix_get(matrixU, k, j);
+                }
+                value = value/Matrix_get(matrixU, j, j);
+                Matrix_set(matrixL, i, j, value);
+            }
+        }
+    }
+
+    // LU分解に成功していることの確認
+    Matrix* product = newMatrix_mlt(matrixL, matrixU);
+    if (!Matrix_isEqual(matrixA, product)) {
+        printf("Failed LU distribution!\n");
+    }
+    deleteMatrix(product);
+
+    Matrix* res = newZeroMatrix(matrixY->line, matrixY->row);
+    for(int i=0; i<Matrix_getRow(matrixY); i++) {
+        // matrixYから、i列目を縦ベクトルを取り出す
+        Matrix* vec = newMatrix_getRowOf(matrixY, i);
+
+        Matrix* res1 = newFS(matrixL, vec);
+        deleteMatrix(vec);
+        Matrix* res2 = newBS(matrixU, res1);
+        deleteMatrix(res1);
+        // res2の結果をresのi列目としてコピー
+        for(int j=0; j<vec->line; j++) {
+            Matrix_set(res, j, i, Matrix_get(res2, j,0));
+        }
+        deleteMatrix(res2);
+    }
+    deleteMatrix(matrixL);
+    deleteMatrix(matrixU);
+
+    return res;
 }

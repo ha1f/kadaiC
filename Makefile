@@ -1,3 +1,3 @@
 # Makefile
-main: main.c Vector3.c
-	clang -o main.out main.c Vector3.c
+main: MatrixTest.c Matrix.c
+	clang -o main.out MatrixTest.c Matrix.c
