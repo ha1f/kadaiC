@@ -125,11 +125,6 @@ void Matrix_multiplyScalar(Matrix* this, double alpha) {
     }
 }
 
-/*
-Matrix* Matrix_newClone(Matrix* this) {
-    double a[1] = {(&Matrix_getComponents(this))};
-    return Matrix_new(Matrix_getLine(this), Matrix_getRow(this), a);
-}*/
 
 // 行列積として新たなベクトルを返す(deleteし忘れないように！)
 Matrix* newMatrix_mlt(Matrix* this, Matrix* matrix) {
